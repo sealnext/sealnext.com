@@ -18,6 +18,66 @@ import {
 } from "lucide-react"
 import { useState, useEffect } from "react"
 
+const ScrollOverlay = () => {
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY)
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  // Calculate opacity based on scroll position and viewport height
+  const viewportHeight = typeof window !== 'undefined' ? window.innerHeight : 800
+  const scrollProgress = Math.min(scrollY / (viewportHeight * 0.3), 1) // Fade in over 30% of viewport height
+
+  // Create the gradient effect based on scroll position
+  const gradientOpacity = Math.min(scrollProgress, 0.8) // Max 80% opacity
+
+  return (
+    <div
+      className="fixed inset-0 pointer-events-none transition-opacity duration-300 ease-out"
+      style={{
+        zIndex: 9999,
+        background: `linear-gradient(to top, rgba(0,0,0,${gradientOpacity}) 0%, rgba(0,0,0,${gradientOpacity * 0.6}) 8%, rgba(0,0,0,${gradientOpacity * 0.2}) 18%, rgba(0,0,0,${gradientOpacity * 0.05}) 25%, transparent 30%)`,
+        opacity: scrollProgress
+      }}
+    />
+  )
+}
+
+const TypewriterText = ({ text, delay = 50, startDelay = 1000 }: { text: string, delay?: number, startDelay?: number }) => {
+  const [displayText, setDisplayText] = useState("")
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isStarted, setIsStarted] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsStarted(true)
+    }, startDelay)
+    return () => clearTimeout(timer)
+  }, [startDelay])
+
+  useEffect(() => {
+    if (!isStarted) return
+
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayText(prev => prev + text[currentIndex])
+        setCurrentIndex(prev => prev + 1)
+      }, delay)
+      return () => clearTimeout(timer)
+    }
+  }, [currentIndex, text, delay, isStarted])
+
+  return (
+    <span>
+      {displayText}
+      {currentIndex < text.length && <span className="animate-pulse">|</span>}
+    </span>
+  )
+}
+
 const XIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -199,72 +259,148 @@ export default function Component() {
     },
   ]
 
-  const founders = [
+  const team = [
     {
       name: "Andrei Badescu",
       role: "Co-Founder & CEO",
       specialization: "Full-Stack & DevOps",
       experience: "5+ Years",
-      skills: ["Distributed Systems", "Machine Learning", "Blockchain", "Cloud Architecture"],
-      github: "alexchen",
-      linkedin: "alexchen-dev",
-      x: "alexchen_dev",
+      skills: ["Full-Stack", "DevOps", "AI", "Cybersecurity"],
+      github: "andreibadescu",
+      linkedin: "andreibadescu",
+      x: "andreibadescu_",
     },
     {
       name: "Ovidiu Bachmatchi",
       role: "Co-Founder & CTO",
       specialization: "Full-Stack & AI",
       experience: "6+ Years",
-      skills: ["Frontend Engineering", "DevOps", "Cybersecurity", "Product Strategy"],
-      github: "marcusrod",
-      linkedin: "marcus-rodriguez",
-      x: "marcus_rod",
+      skills: ["Backend", "AI", "UI/UX", "Product Strategy"],
+      github: "ovidiubachmatchi",
+      linkedin: "ovidiubachmatchi",
+      x: "andreibadescu_",
     },
   ]
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      <ScrollOverlay />
       {/* Animated Background Grid */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-gray-900 to-black" />
+        <div className="absolute inset-0 bg-gray-900" />
         <div
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-25"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
+              linear-gradient(rgba(0, 255, 255, 0.2) 2px, transparent 2px),
+              linear-gradient(90deg, rgba(0, 255, 255, 0.2) 2px, transparent 2px)
             `,
             backgroundSize: "50px 50px",
             animation: "grid-move 20s linear infinite",
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
       </div>
 
-      {/* Floating Particles */}
-      <div className="fixed inset-0 z-0">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-cyan-400 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -100, 0],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Number.POSITIVE_INFINITY,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
+
+
+      {/* Floating Star Particles */}
+      <div className="absolute top-0 left-0 w-full min-h-full z-15 pointer-events-none" style={{ height: '200vh' }}>
+        {[...Array(120)].map((_, i) => {
+          const size = Math.random() * 3 + 2; // 2-5px
+          const startX = Math.random() * 100;
+          const startY = Math.random() * 100;
+          const drift = (Math.random() - 0.5) * 80; // more horizontal drift
+          const isUpward = Math.random() > 0.15; // 85% go up, 15% float around
+
+          return (
+            <motion.div
+              key={i}
+              className="absolute"
+              style={{
+                width: `${size}px`,
+                height: `${size}px`,
+              }}
+              initial={{
+                left: `${startX}%`,
+                top: `${startY}%`,
+              }}
+              animate={isUpward ? {
+                y: [0, -window.innerHeight - 150],
+                x: [0, drift],
+                opacity: [0, 0.7, 1, 0.7, 0],
+              } : {
+                y: [0, (Math.random() - 0.5) * 400, (Math.random() - 0.5) * 600],
+                x: [0, (Math.random() - 0.5) * 300, (Math.random() - 0.5) * 200],
+                opacity: [0, 0.8, 0.9, 0.6, 0.8, 0],
+              }}
+              transition={{
+                duration: isUpward ? 8 + Math.random() * 6 : 10 + Math.random() * 8,
+                repeat: Number.POSITIVE_INFINITY,
+                delay: Math.random() * 6,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+            >
+              {/* Star shape with multiple points */}
+              <motion.div
+                className="relative w-full h-full"
+                animate={{
+                  rotate: [0, 360],
+                  scale: [0.8, 1.2, 0.8],
+                }}
+                transition={{
+                  rotate: { duration: 8 + Math.random() * 4, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+                  scale: { duration: 2 + Math.random() * 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }
+                }}
+              >
+                {/* Central bright core */}
+                <div
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full"
+                  style={{
+                    width: `${size * 0.3}px`,
+                    height: `${size * 0.3}px`,
+                    boxShadow: `0 0 ${size * 2}px rgba(255, 255, 255, 0.8), 0 0 ${size * 4}px rgba(34, 211, 238, 0.6)`
+                  }}
+                />
+                {/* Star rays */}
+                <div
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-400"
+                  style={{
+                    width: `${size}px`,
+                    height: `${size * 0.15}px`,
+                    boxShadow: `0 0 ${size}px rgba(34, 211, 238, 0.8)`
+                  }}
+                />
+                <div
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-400 rotate-90"
+                  style={{
+                    width: `${size}px`,
+                    height: `${size * 0.15}px`,
+                    boxShadow: `0 0 ${size}px rgba(34, 211, 238, 0.8)`
+                  }}
+                />
+                <div
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-300 rotate-45"
+                  style={{
+                    width: `${size * 0.7}px`,
+                    height: `${size * 0.1}px`,
+                    boxShadow: `0 0 ${size * 0.7}px rgba(34, 211, 238, 0.6)`
+                  }}
+                />
+                <div
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-300 -rotate-45"
+                  style={{
+                    width: `${size * 0.7}px`,
+                    height: `${size * 0.1}px`,
+                    boxShadow: `0 0 ${size * 0.7}px rgba(34, 211, 238, 0.6)`
+                  }}
+                />
+              </motion.div>
+            </motion.div>
+          );
+        })}
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-20">
         {/* Header */}
         <motion.header
           className={`fixed top-0 w-full z-50 backdrop-blur-md border-b transition-all duration-300 ${
@@ -290,6 +426,7 @@ export default function Component() {
                     width={120}
                     height={32}
                     className="h-8 w-auto brightness-0 invert"
+                    draggable="false"
                   />
                 </motion.div>
               </div>
@@ -309,7 +446,7 @@ export default function Component() {
                     Projects
                   </a>
                   <a
-                    href="#founders"
+                    href="#team"
                     className="text-sm font-medium text-gray-300 hover:text-cyan-400 transition-colors"
                   >
                     Team
@@ -346,6 +483,7 @@ export default function Component() {
                   width={100}
                   height={26}
                   className="h-6 w-auto brightness-0 invert"
+                  draggable="false"
                 />
               </motion.div>
 
@@ -417,7 +555,7 @@ export default function Component() {
                     Projects
                   </a>
                   <a
-                    href="#founders"
+                    href="#team"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="text-lg font-medium text-gray-300 hover:text-cyan-400 transition-colors py-2 border-b border-gray-800 hover:border-cyan-500/30"
                   >
@@ -429,9 +567,118 @@ export default function Component() {
           </motion.div>
         </motion.header>
 
-        {/* Hero Section */}
-        <section className="pt-28 pb-20 px-4">
-          <div className="container mx-auto text-center">
+                {/* Hero Section */}
+        <section
+          className="pt-28 pb-32 px-4 relative"
+          style={{
+            backgroundImage: `url('https://cdn.sealnext.com/earth-surface.webp')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat',
+            backgroundAttachment: 'fixed'
+          }}
+        >
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] z-0" />
+          {/* Bottom gradient for smooth section transition */}
+          <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent z-10" />
+          {/* Hero Section Star Particles */}
+          <div className="absolute inset-0 z-10 pointer-events-none">
+            {[...Array(35)].map((_, i) => {
+              const size = Math.random() * 3 + 2; // 2-5px
+              const startX = Math.random() * 100;
+              const startY = Math.random() * 100;
+              const drift = (Math.random() - 0.5) * 80;
+              const isUpward = Math.random() > 0.15;
+
+              return (
+                <motion.div
+                  key={`hero-${i}`}
+                  className="absolute"
+                  style={{
+                    width: `${size}px`,
+                    height: `${size}px`,
+                  }}
+                  initial={{
+                    left: `${startX}%`,
+                    top: `${startY}%`,
+                  }}
+                  animate={isUpward ? {
+                    y: [0, -600],
+                    x: [0, drift],
+                    opacity: [0, 0.7, 1, 0.7, 0],
+                  } : {
+                    y: [0, (Math.random() - 0.5) * 300, (Math.random() - 0.5) * 400],
+                    x: [0, (Math.random() - 0.5) * 250, (Math.random() - 0.5) * 180],
+                    opacity: [0, 0.8, 0.9, 0.6, 0.8, 0],
+                  }}
+                  transition={{
+                    duration: isUpward ? 8 + Math.random() * 6 : 10 + Math.random() * 8,
+                    repeat: Number.POSITIVE_INFINITY,
+                    delay: Math.random() * 6,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                  }}
+                >
+                  {/* Star shape */}
+                  <motion.div
+                    className="relative w-full h-full"
+                    animate={{
+                      rotate: [0, 360],
+                      scale: [0.8, 1.2, 0.8],
+                    }}
+                    transition={{
+                      rotate: { duration: 8 + Math.random() * 4, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+                      scale: { duration: 2 + Math.random() * 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }
+                    }}
+                  >
+                    {/* Central bright core */}
+                    <div
+                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full"
+                      style={{
+                        width: `${size * 0.3}px`,
+                        height: `${size * 0.3}px`,
+                        boxShadow: `0 0 ${size * 2}px rgba(255, 255, 255, 0.8), 0 0 ${size * 4}px rgba(34, 211, 238, 0.6)`
+                      }}
+                    />
+                    {/* Star rays */}
+                    <div
+                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-400"
+                      style={{
+                        width: `${size}px`,
+                        height: `${size * 0.15}px`,
+                        boxShadow: `0 0 ${size}px rgba(34, 211, 238, 0.8)`
+                      }}
+                    />
+                    <div
+                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-400 rotate-90"
+                      style={{
+                        width: `${size}px`,
+                        height: `${size * 0.15}px`,
+                        boxShadow: `0 0 ${size}px rgba(34, 211, 238, 0.8)`
+                      }}
+                    />
+                    <div
+                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-300 rotate-45"
+                      style={{
+                        width: `${size * 0.7}px`,
+                        height: `${size * 0.1}px`,
+                        boxShadow: `0 0 ${size * 0.7}px rgba(34, 211, 238, 0.6)`
+                      }}
+                    />
+                    <div
+                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-300 -rotate-45"
+                      style={{
+                        width: `${size * 0.7}px`,
+                        height: `${size * 0.1}px`,
+                        boxShadow: `0 0 ${size * 0.7}px rgba(34, 211, 238, 0.6)`
+                      }}
+                    />
+                                    </motion.div>
+                </motion.div>
+              );
+            })}
+          </div>
+          <div className="container mx-auto text-center relative z-20">
             <motion.div variants={containerVariants} initial="hidden" animate="visible" className="max-w-6xl mx-auto">
               <motion.div variants={itemVariants} className="mb-8">
                 <motion.div variants={glitchVariants} animate="animate" className="inline-block mb-8 relative">
@@ -442,6 +689,7 @@ export default function Component() {
                     width={100}
                     height={100}
                     className="mx-auto brightness-0 invert relative z-10"
+                    draggable="false"
                   />
                   <div className="absolute inset-0 border border-cyan-400/30 rounded-full animate-pulse" />
                 </motion.div>
@@ -461,7 +709,7 @@ export default function Component() {
 
                 <div className="relative mb-8">
                   <p className="text-xl md:text-2xl text-gray-300 mb-4 font-mono">
-                    {">"} INITIALIZING QUANTUM SYSTEMS...
+                    {">"} <TypewriterText text="INITIALIZING QUANTUM SYSTEMS..." delay={80} startDelay={500} />
                   </p>
                   <motion.p
                     className="text-2xl md:text-3xl text-white font-bold leading-tight"
@@ -547,7 +795,7 @@ export default function Component() {
 
         {/* Tech Specs Section */}
         <section id="systems" className="py-20 px-4 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/50 to-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/30 to-transparent" />
           <div className="container mx-auto relative">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -680,7 +928,7 @@ export default function Component() {
 
         {/* Tech Stack Section */}
         <section className="py-20 px-4 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/50 to-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-800/20 to-transparent" />
           <div className="container mx-auto relative">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -749,7 +997,7 @@ export default function Component() {
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
-              {founders.map((founder, index) => (
+              {team.map((member, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -767,20 +1015,20 @@ export default function Component() {
                           <User className="h-12 w-12 text-cyan-400" />
                         </div>
                         <h3 className="text-2xl font-black text-white mb-1 group-hover:text-cyan-400 transition-colors">
-                          {founder.name}
+                          {member.name}
                         </h3>
-                        <p className="text-cyan-400 font-mono text-sm mb-2">{founder.role}</p>
+                        <p className="text-cyan-400 font-mono text-sm mb-2">{member.role}</p>
                         <div className="flex items-center justify-center space-x-4 text-xs text-gray-400 font-mono">
-                          <span>{founder.specialization}</span>
+                          <span>{member.specialization}</span>
                           <span>•</span>
-                          <span>{founder.experience}</span>
+                          <span>{member.experience}</span>
                         </div>
                       </div>
 
                       <div className="mb-6">
                         <h4 className="text-sm font-black text-white mb-3">CORE EXPERTISE</h4>
                         <div className="grid grid-cols-2 gap-2">
-                          {founder.skills.map((skill, skillIndex) => (
+                          {member.skills.map((skill, skillIndex) => (
                             <div
                               key={skillIndex}
                               className="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded text-center"
@@ -798,7 +1046,7 @@ export default function Component() {
                           asChild
                           className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent"
                         >
-                          <a href={`https://github.com/${founder.github}`} className="flex items-center space-x-0">
+                          <a href={`https://github.com/${member.github}`} className="flex items-center space-x-0">
                             <Github className="h-4 w-4" />
                             <span>GitHub</span>
                           </a>
@@ -810,7 +1058,7 @@ export default function Component() {
                           className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent"
                         >
                           <a
-                            href={`https://linkedin.com/in/${founder.linkedin}`}
+                            href={`https://linkedin.com/in/${member.linkedin}`}
                             className="flex items-center space-x-0"
                           >
                             <Linkedin className="h-4 w-4" />
@@ -823,7 +1071,7 @@ export default function Component() {
                           asChild
                           className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent"
                         >
-                          <a href={`https://x.com/${founder.x}`} className="flex items-center space-x-0">
+                          <a href={`https://x.com/${member.x}`} className="flex items-center space-x-0">
                             <XIcon className="h-4 w-4" />
                             <span>X</span>
                           </a>
@@ -839,7 +1087,7 @@ export default function Component() {
 
         {/* CTA Section */}
         <section className="py-20 px-4 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-cyan-500/10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent" />
           <div className="container mx-auto text-center relative">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -856,18 +1104,24 @@ export default function Component() {
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Button
                   size="lg"
+                  asChild
                   className="text-lg px-10 py-6 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-bold border-2 border-cyan-400 shadow-lg shadow-cyan-500/25 transform hover:scale-105 transition-all duration-300"
                 >
-                  <Code className="h-5 w-5" />
-                  START CONTRIBUTING
+                  <a href="https://github.com/sealnext" className="flex items-center space-x-2">
+                    <Code className="h-5 w-5" />
+                    <span>START CONTRIBUTING</span>
+                  </a>
                 </Button>
                 <Button
                   variant="outline"
                   size="lg"
+                  asChild
                   className="text-lg px-10 py-6 border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 font-bold transform hover:scale-105 transition-all duration-300 bg-transparent"
                 >
-                  <DiscordIcon className="h-5 w-5" />
-                  ENTER DISCORD
+                  <a href="https://discord.gg/CebnAd7UWb" className="flex items-center space-x-2">
+                    <DiscordIcon className="h-5 w-5" />
+                    <span>ENTER DISCORD</span>
+                  </a>
                 </Button>
               </div>
             </motion.div>
@@ -905,14 +1159,13 @@ export default function Component() {
                   >
                     <div className="flex items-center space-x-3 mb-6">
                       <img
-                        src="https://cdn.sealnext.com/logo.svg"
+                        src="https://cdn.sealnext.com/logo-full.svg"
                         alt="Sealnext"
-                        width={32}
-                        height={32}
+                        width={200}
                         className="brightness-0 invert"
+                        draggable="false"
                       />
-                      <span className="text-2xl font-black text-white">SEALNEXT</span>
-                      <span className="text-cyan-400 font-mono text-sm bg-cyan-500/10 px-2 py-1 rounded">v2.0.1</span>
+                      <span className="text-cyan-400 font-mono text-sm bg-cyan-500/10 px-2 py-1 rounded">v1.0</span>
                     </div>
                     <p className="text-gray-300 mb-6 max-w-md leading-relaxed font-mono text-sm">
                       {">"} Building the future with open source technology. All our projects are free, secure, and MIT
@@ -971,10 +1224,9 @@ export default function Component() {
                     <h3 className="text-white font-black mb-6 text-lg">COMMUNITY</h3>
                     <ul className="space-y-3">
                       {[
-                        { name: "GitHub", href: "https://github.com", icon: Github },
-                        { name: "Discord", href: "#", icon: DiscordIcon },
-                        { name: "X", href: "#", icon: XIcon },
-                        { name: "LinkedIn", href: "#", icon: Linkedin },
+                        { name: "GitHub", href: "https://github.com/sealnext", icon: Github },
+                        { name: "Discord", href: "https://discord.gg/CebnAd7UWb", icon: DiscordIcon },
+                        { name: "LinkedIn", href: "https://www.linkedin.com/company/sealnext", icon: Linkedin },
                       ].map((link, index) => (
                         <li key={index}>
                           <a
@@ -1001,10 +1253,10 @@ export default function Component() {
               >
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                   {[
-                    { label: "GitHub Stars", value: "12.5K+", icon: Star },
-                    { label: "Contributors", value: "150+", icon: Users },
-                    { label: "Projects", value: "25+", icon: Code },
-                    { label: "Downloads", value: "500K+", icon: Terminal },
+                    { label: "GitHub Stars", value: "1K+", icon: Star },
+                    { label: "Contributors", value: "5+", icon: Users },
+                    { label: "Projects", value: "10+", icon: Code },
+                    { label: "Downloads", value: "100+", icon: Terminal },
                   ].map((stat, index) => (
                     <div key={index} className="text-center group">
                       <div className="flex items-center justify-center mb-2">
@@ -1021,7 +1273,7 @@ export default function Component() {
             {/* Bottom Bar */}
             <div className="border-t border-cyan-500/20 bg-black/50">
               <div className="container mx-auto px-4 py-6">
-                <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+                <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
                   <div className="flex items-center space-x-6">
                     <span className="text-sm text-gray-400 font-mono">
                       © {new Date().getFullYear()} SEALNEXT // OPEN SOURCE SYSTEMS
@@ -1042,7 +1294,7 @@ export default function Component() {
                   <div className="flex items-center space-x-4">
                     <span className="text-xs text-gray-500 font-mono">Built with</span>
                     <div className="flex items-center space-x-2">
-                      {["React", "Next.js", "TypeScript"].map((tech, index) => (
+                      {["React", "Vite", "Shadcn", "Tailwind"].map((tech, index) => (
                         <span key={index} className="text-xs bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded font-mono">
                           {tech}
                         </span>
