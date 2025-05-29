@@ -50,6 +50,7 @@ const TypewriterText = ({ text, delay = 50, startDelay = 1000 }: { text: string,
   const [displayText, setDisplayText] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isStarted, setIsStarted] = useState(false)
+  const [showCursor, setShowCursor] = useState(true)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -70,10 +71,29 @@ const TypewriterText = ({ text, delay = 50, startDelay = 1000 }: { text: string,
     }
   }, [currentIndex, text, delay, isStarted])
 
+  // Blinking cursor effect - only blinks when typing is complete
+  useEffect(() => {
+    const isTyping = currentIndex < text.length
+
+    if (isTyping) {
+      // Show cursor while typing, no blinking
+      setShowCursor(true)
+      return
+    }
+
+    // Start blinking only after typing is complete
+    const cursorTimer = setInterval(() => {
+      setShowCursor(prev => !prev)
+    }, 530) // Standard terminal cursor blink rate
+
+    return () => clearInterval(cursorTimer)
+  }, [currentIndex, text.length])
+
   return (
     <span>
       {displayText}
-      {currentIndex < text.length && <span className="animate-pulse">|</span>}
+      <span className={`relative inline-block w-[2.5px] h-7 bg-gray-300 align-text-top ${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity duration-75`} style={{ bottom: '2px' }}>
+      </span>
     </span>
   )
 }
@@ -567,7 +587,7 @@ export default function Component() {
           </motion.div>
         </motion.header>
 
-                {/* Hero Section */}
+        {/* Hero Section */}
         <section
           className="pt-28 pb-32 px-4 relative"
           style={{
@@ -694,50 +714,57 @@ export default function Component() {
                   <div className="absolute inset-0 border border-cyan-400/30 rounded-full animate-pulse" />
                 </motion.div>
 
-                <motion.h1
-                  className="text-6xl md:text-8xl font-black mb-6 relative"
+                <motion.div
+                  className="mb-6 relative"
                   variants={glitchVariants}
                   animate="animate"
                 >
-                  <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-600 bg-clip-text text-transparent">
-                    SEALNEXT
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-600 bg-clip-text text-transparent opacity-50 blur-sm">
-                    SEALNEXT
+                  <img
+                    src="https://cdn.sealnext.com/logo-full.svg"
+                    alt="Sealnext"
+                    className="mx-auto h-20 w-auto brightness-0 invert relative z-10"
+                    draggable="false"
+                  />
+                  <div className="absolute inset-0 brightness-0 invert opacity-50 blur-sm">
+                    <img
+                      src="https://cdn.sealnext.com/logo-full.svg"
+                      alt="Sealnext"
+                      className="mx-auto h-20 w-auto brightness-0 invert"
+                      draggable="false"
+                    />
                   </div>
-                </motion.h1>
+                </motion.div>
 
                 <div className="relative mb-8">
                   <p className="text-xl md:text-2xl text-gray-300 mb-4 font-mono">
-                    {">"} <TypewriterText text="INITIALIZING QUANTUM SYSTEMS..." delay={80} startDelay={500} />
+                    {">"} <TypewriterText text="BUILDING THE FUTURE WITH OPEN SOURCE TECHNOLOGY." delay={80} startDelay={500} />
                   </p>
-                  <motion.p
+                  {/* <motion.p
                     className="text-2xl md:text-3xl text-white font-bold leading-tight"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1 }}
                   >
                     BUILDING THE FUTURE WITH <span className="text-cyan-400 font-black">OPEN SOURCE</span> TECHNOLOGY
-                  </motion.p>
+                  </motion.p> */}
                 </div>
               </motion.div>
 
               <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
                 <Button
                   size="lg"
-                  className="text-lg px-10 py-6 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-bold border-2 border-cyan-400 shadow-lg shadow-cyan-500/25 transform hover:scale-105 transition-all duration-300"
+                  className="text-lg px-[42px] py-[26px] bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-bold transform hover:scale-105 transition-all duration-300"
                 >
-                  <Terminal className="h-5 w-5" />
+                  <Terminal className="size-6" />
                   ACCESS SYSTEMS
                 </Button>
                 <Button
-                  variant="outline"
                   size="lg"
-                  className="text-lg px-10 py-6 border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 font-bold transform hover:scale-105 transition-all duration-300 bg-transparent"
+                  className="text-lg px-10 py-6 border-2 border-cyan-500 !text-cyan-400 hover:!text-white hover:bg-cyan-500/10 hover:border-cyan-400 font-bold transform hover:scale-105 transition-all duration-300 bg-transparent"
                   asChild
                 >
-                  <a href="https://github.com" className="flex items-center space-x-0">
-                    <Github className="h-5 w-5" />
+                  <a href="https://github.com" className="flex items-center space-x-0 !text-cyan-400 hover:!text-white">
+                    <Github className="size-6" />
                     <span>VIEW SOURCE</span>
                   </a>
                 </Button>
@@ -1105,9 +1132,9 @@ export default function Component() {
                 <Button
                   size="lg"
                   asChild
-                  className="text-lg px-10 py-6 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-bold border-2 border-cyan-400 shadow-lg shadow-cyan-500/25 transform hover:scale-105 transition-all duration-300"
+                  className="text-lg px-10 py-6 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 !text-cyan-100 hover:!text-white font-bold transform hover:scale-105 transition-all duration-300"
                 >
-                  <a href="https://github.com/sealnext" className="flex items-center space-x-2">
+                  <a href="https://github.com" className="flex items-center space-x-2">
                     <Code className="h-5 w-5" />
                     <span>START CONTRIBUTING</span>
                   </a>
