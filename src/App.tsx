@@ -9,12 +9,14 @@ import {
 	Shield,
 	ExternalLink,
 	Star,
-	Terminal,
+	Download,
 	User,
+	Terminal,
 	Linkedin,
 	Heart,
 	Lock,
 	Globe,
+	Rocket
 } from "lucide-react"
 import { useState, useEffect } from "react"
 
@@ -314,6 +316,8 @@ export default function Component() {
 			github: "andreibadescu",
 			linkedin: "andreibadescu",
 			x: "andreibadescu_",
+			link: "https://andreibadescu.com",
+			picture: "https://cdn.andreibadescu.com/profile.webp"
 		},
 		{
 			name: "Ovidiu Bachmatchi",
@@ -324,6 +328,7 @@ export default function Component() {
 			github: "ovidiubachmatchi",
 			linkedin: "ovidiubachmatchi",
 			x: "andreibadescu_",
+			link: "https://ovidiubachmatchi.com",
 		},
 	]
 
@@ -465,12 +470,14 @@ export default function Component() {
 									transition={{ duration: 0.6 }}
 									className="flex items-center space-x-2"
 								>
-									<img
-										src="https://cdn.sealnext.com/logo-full.svg"
-										alt="Sealnext Logo"
-										className="h-8 w-auto brightness-0 invert"
-										draggable="false"
-									/>
+									<a href="https://sealnext.com">
+										<img
+											src="https://cdn.sealnext.com/logo-full.svg"
+											alt="Sealnext Logo"
+											className="h-8 w-auto [filter:brightness(0)_saturate(100%)_invert(86%)_sepia(6%)_saturate(151%)_hue-rotate(169deg)_brightness(95%)_contrast(90%)] hover:[filter:brightness(0)_saturate(100%)_invert(74%)_sepia(80%)_saturate(3207%)_hue-rotate(177deg)_brightness(103%)_contrast(101%)] transition-all duration-300"
+											draggable="false"
+										/>
+									</a>
 								</motion.div>
 							</div>
 
@@ -502,7 +509,7 @@ export default function Component() {
 									variant="outline"
 									size="sm"
 									asChild
-									className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent"
+									className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent transition-colors hover:!text-white"
 								>
 									<a href="https://github.com" className="flex items-center space-x-0">
 										<Github className="h-4 w-4" />
@@ -520,42 +527,43 @@ export default function Component() {
 								transition={{ duration: 0.6 }}
 								className="flex items-center space-x-2"
 							>
-								<img
-									src="https://cdn.sealnext.com/logo-full.svg"
-									alt="Sealnext Logo"
-									className="h-6 w-auto brightness-0 invert"
-									draggable="false"
-								/>
+								<a href="https://sealnext.com">
+									<img
+										src="https://cdn.sealnext.com/logo-full.svg"
+										alt="Sealnext Logo"
+										className="h-5 w-auto [filter:brightness(0)_saturate(100%)_invert(86%)_sepia(6%)_saturate(151%)_hue-rotate(169deg)_brightness(95%)_contrast(90%)] hover:[filter:brightness(0)_saturate(100%)_invert(74%)_sepia(80%)_saturate(3207%)_hue-rotate(177deg)_brightness(103%)_contrast(101%)] transition-all duration-300"
+										draggable="false"
+									/>
+								</a>
 							</motion.div>
 
 							<div className="flex items-center space-x-3">
 								<Button
 									variant="outline"
-									size="sm"
-									asChild
-									className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent px-2"
+									size="lg"
+									className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent hover:text-white px-2 py-0.5"
 								>
-									<a href="https://github.com" className="flex items-center">
-										<Github className="h-4 w-4" />
+									<a href="https://github.com/sealnext" target="_blank" rel="noopener noreferrer">
+										<Github className="size-6 relative left-[1px]" />
 									</a>
 								</Button>
 
 								<Button
 									variant="ghost"
-									size="sm"
+									size="lg"
 									onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-									className="text-cyan-400 hover:bg-cyan-500/10 p-2"
+									className="text-cyan-400 hover:bg-cyan-500/10 hover:text-white p-2"
 								>
 									<motion.div
 										animate={isMobileMenuOpen ? { rotate: 90 } : { rotate: 0 }}
-										transition={{ duration: 0.2 }}
+										transition={{ duration: 0.3 }}
 									>
 										{isMobileMenuOpen ? (
-											<svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+											<svg style={{ width: '28px', height: '28px' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
 											</svg>
 										) : (
-											<svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+											<svg style={{ width: '28px', height: '28px' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
 												<path
 													strokeLinecap="round"
 													strokeLinejoin="round"
@@ -580,25 +588,25 @@ export default function Component() {
 					>
 						<div className="bg-black/95 backdrop-blur-md border-t border-cyan-500/20">
 							<nav className="container mx-auto px-4 py-4">
-								<div className="flex flex-col space-y-4">
+								<div className="flex flex-col space-y-5">
 									<a
 										href="#systems"
 										onClick={() => setIsMobileMenuOpen(false)}
-										className="text-lg font-medium text-gray-300 hover:text-cyan-400 transition-colors py-2 border-b border-gray-800 hover:border-cyan-500/30"
+										className="text-lg font-medium text-gray-300 hover:text-cyan-400 transition-colors py-1 border-b border-gray-800 hover:border-cyan-500/30"
 									>
 										Systems
 									</a>
 									<a
 										href="#projects"
 										onClick={() => setIsMobileMenuOpen(false)}
-										className="text-lg font-medium text-gray-300 hover:text-cyan-400 transition-colors py-2 border-b border-gray-800 hover:border-cyan-500/30"
+										className="text-lg font-medium text-gray-300 hover:text-cyan-400 transition-colors py-1 border-b border-gray-800 hover:border-cyan-500/30"
 									>
 										Projects
 									</a>
 									<a
 										href="#team"
 										onClick={() => setIsMobileMenuOpen(false)}
-										className="text-lg font-medium text-gray-300 hover:text-cyan-400 transition-colors py-2 border-b border-gray-800 hover:border-cyan-500/30"
+										className="text-lg font-medium text-gray-300 hover:text-cyan-400 transition-colors py-1 border-b border-gray-800 hover:border-cyan-500/30"
 									>
 										Team
 									</a>
@@ -782,10 +790,13 @@ export default function Component() {
 							<motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
 								<Button
 									size="lg"
-									className="text-lg px-[42px] py-[26px] bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-bold transform hover:scale-105 transition-all duration-300"
+									className="text-lg px-[42px] py-[26px] bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold transform hover:scale-105 transition-all duration-300"
+									asChild
 								>
-									<Terminal className="size-6" />
-									ACCESS SYSTEMS
+									<a href="https://github.com/sealnext" target="_blank" rel="noopener noreferrer">
+										<Rocket className="size-6" />
+										VIEW PRODUCTS
+									</a>
 								</Button>
 								<Button
 									size="lg"
@@ -864,7 +875,7 @@ export default function Component() {
 								<span className="text-cyan-400">SYSTEM</span> ARCHITECTURE
 							</h2>
 							<p className="text-xl text-gray-300 max-w-4xl mx-auto font-mono">
-								{">"} Advanced open-source frameworks engineered for maximum performance and security
+								{">"} Software engineered for maximum performance and security
 							</p>
 						</motion.div>
 
@@ -914,7 +925,7 @@ export default function Component() {
 								<span className="text-cyan-400">ACTIVE</span> PROJECTS
 							</h2>
 							<p className="text-xl text-gray-300 max-w-4xl mx-auto font-mono">
-								{">"} Mission-critical systems powering the next generation of technology
+								{">"} Powering the next generation of technology
 							</p>
 						</motion.div>
 
@@ -997,7 +1008,7 @@ export default function Component() {
 								<span className="text-cyan-400">POWERED</span> BY
 							</h2>
 							<p className="text-xl text-gray-300 max-w-4xl mx-auto font-mono">
-								{">"} Modern technologies driving our open source ecosystem
+								{">"} Modern technologies driving our ecosystem
 							</p>
 						</motion.div>
 
@@ -1048,7 +1059,7 @@ export default function Component() {
 								<span className="text-cyan-400">CORE</span> TEAM
 							</h2>
 							<p className="text-xl text-gray-300 max-w-4xl mx-auto font-mono">
-								{">"} Elite engineers architecting the future of open source technology
+								{">"} Elite engineers architecting the future of software
 							</p>
 						</motion.div>
 
@@ -1063,78 +1074,86 @@ export default function Component() {
 									whileHover={{ y: -10 }}
 									className="group"
 								>
-									<Card className="bg-gray-900/30 backdrop-blur-sm border-cyan-500/20 hover:border-cyan-400/50 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-cyan-500/25 relative overflow-hidden">
-										<div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-										<CardContent className="p-8 relative">
-											<div className="text-center mb-6">
-												<div className="w-24 h-24 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg mx-auto mb-4 flex items-center justify-center group-hover:from-cyan-500/30 group-hover:to-blue-500/30 transition-all duration-300">
-													<User className="h-12 w-12 text-cyan-400" />
+									<a href={member.link} target="_blank" rel="noopener" className="cursor-pointer">
+										<Card className="bg-gray-900/30 backdrop-blur-sm border-cyan-500/20 hover:border-cyan-400/50 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-cyan-500/25 relative overflow-hidden">
+											<div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+											<CardContent className="px-8 py-6 relative">
+												<div className="text-center mb-8">
+													<div className="w-60 h-60 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg  overflow-hidden mx-auto mb-6 flex items-center justify-center group-hover:from-cyan-500/30 group-hover:to-blue-500/30 transition-all duration-300">
+													 {member.picture ? (
+														<img src={member.picture} alt={member.name} className="object-cover w-full h-full" />
+													 ) : (
+														<User className="h-12 w-12 text-cyan-400" />
+													 )}
+													</div>
+													<h3 className="text-2xl font-black text-white mb-1 group-hover:text-cyan-400 transition-colors">
+														{member.name}
+													</h3>
+													<p className="text-cyan-400 font-mono text-sm mb-2">{member.role}</p>
+													<div className="flex items-center justify-center space-x-4 text-xs text-gray-400 font-mono">
+														<span>{member.specialization}</span>
+														<span>•</span>
+														<span>{member.experience}</span>
+													</div>
 												</div>
-												<h3 className="text-2xl font-black text-white mb-1 group-hover:text-cyan-400 transition-colors">
-													{member.name}
-												</h3>
-												<p className="text-cyan-400 font-mono text-sm mb-2">{member.role}</p>
-												<div className="flex items-center justify-center space-x-4 text-xs text-gray-400 font-mono">
-													<span>{member.specialization}</span>
-													<span>•</span>
-													<span>{member.experience}</span>
-												</div>
-											</div>
 
-											<div className="mb-6">
-												<h4 className="text-sm font-black text-white mb-3">CORE EXPERTISE</h4>
-												<div className="grid grid-cols-2 gap-2">
-													{member.skills.map((skill, skillIndex) => (
-														<div
-															key={skillIndex}
-															className="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded text-center"
-														>
-															{skill}
-														</div>
-													))}
+												<div className="mb-8">
+													<h4 className="text-sm font-black text-white mb-3">CORE EXPERTISE</h4>
+													<div className="grid grid-cols-2 gap-2">
+														{member.skills.map((skill, skillIndex) => (
+															<div
+																key={skillIndex}
+																className="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded text-center"
+															>
+																{skill}
+															</div>
+														))}
+													</div>
 												</div>
-											</div>
 
-											<div className="flex justify-center space-x-3">
-												<Button
-													variant="outline"
-													size="sm"
-													asChild
-													className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent"
-												>
-													<a href={`https://github.com/${member.github}`} className="flex items-center space-x-0">
-														<Github className="h-4 w-4" />
-														<span>GitHub</span>
-													</a>
-												</Button>
-												<Button
-													variant="outline"
-													size="sm"
-													asChild
-													className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent"
-												>
-													<a
-														href={`https://linkedin.com/in/${member.linkedin}`}
-														className="flex items-center space-x-0"
+												<div className="flex justify-center space-x-3">
+													<Button
+														variant="outline"
+														size="sm"
+														asChild
+														className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent"
 													>
-														<Linkedin className="h-4 w-4" />
-														<span>LinkedIn</span>
-													</a>
-												</Button>
-												<Button
-													variant="outline"
-													size="sm"
-													asChild
-													className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent"
-												>
-													<a href={`https://x.com/${member.x}`} className="flex items-center space-x-0">
-														<XIcon className="h-4 w-4" />
-														<span>X</span>
-													</a>
-												</Button>
-											</div>
-										</CardContent>
-									</Card>
+														<a href={`https://github.com/${member.github}`} className="flex items-center space-x-0 hover:text-white" target="_blank" rel="noopener noreferrer">
+															<Github className="h-4 w-4" />
+															<span>GitHub</span>
+														</a>
+													</Button>
+													<Button
+														variant="outline"
+														size="sm"
+														asChild
+														className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent"
+													>
+														<a
+															href={`https://linkedin.com/in/${member.linkedin}`}
+															className="flex items-center space-x-0 hover:text-white"
+															target="_blank"
+															rel="noopener noreferrer"
+														>
+															<Linkedin className="h-4 w-4" />
+															<span>LinkedIn</span>
+														</a>
+													</Button>
+													<Button
+														variant="outline"
+														size="sm"
+														asChild
+														className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent"
+													>
+														<a href={`https://x.com/${member.x}`} className="flex items-center space-x-0 hover:text-white" target="_blank" rel="noopener noreferrer">
+															<XIcon className="h-4 w-4" />
+															<span>X</span>
+														</a>
+													</Button>
+												</div>
+											</CardContent>
+										</Card>
+									</a>
 								</motion.div>
 							))}
 						</div>
@@ -1155,7 +1174,7 @@ export default function Component() {
 								<span className="text-cyan-400">JOIN</span> THE NETWORK
 							</h2>
 							<p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto font-mono">
-								{">"} Connect with elite developers building the infrastructure of tomorrow
+								{">"} Connect with developers building the technology of tomorrow
 							</p>
 							<div className="flex flex-col sm:flex-row gap-6 justify-center">
 								<Button
@@ -1163,8 +1182,8 @@ export default function Component() {
 									asChild
 									className="text-lg px-10 py-6 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 !text-cyan-100 hover:!text-white font-bold transform hover:scale-105 transition-all duration-300"
 								>
-									<a href="https://github.com" className="flex items-center space-x-2">
-										<Code className="h-5 w-5" />
+									<a href="https://github.com" className="flex items-center" target="_blank" rel="noopener noreferrer">
+										<Terminal className="size-6" />
 										<span>START CONTRIBUTING</span>
 									</a>
 								</Button>
@@ -1172,10 +1191,10 @@ export default function Component() {
 									variant="outline"
 									size="lg"
 									asChild
-									className="text-lg px-10 py-6 border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 font-bold transform hover:scale-105 transition-all duration-300 bg-transparent"
+									className="text-lg px-10 py-6 border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 font-bold transform hover:scale-105 transition-all duration-300 bg-transparent hover:!text-white"
 								>
-									<a href="https://discord.gg/CebnAd7UWb" className="flex items-center space-x-2">
-										<DiscordIcon className="h-5 w-5" />
+									<a href="https://discord.gg/CebnAd7UWb" className="flex items-center" target="_blank" rel="noopener noreferrer">
+										<DiscordIcon className="size-6" />
 										<span>ENTER DISCORD</span>
 									</a>
 								</Button>
@@ -1312,7 +1331,7 @@ export default function Component() {
 										{ label: "GitHub Stars", value: "1K+", icon: Star },
 										{ label: "Contributors", value: "5+", icon: Users },
 										{ label: "Projects", value: "10+", icon: Code },
-										{ label: "Downloads", value: "100+", icon: Terminal },
+										{ label: "Downloads", value: "100+", icon: Download },
 									].map((stat, index) => (
 										<div key={index} className="text-center group">
 											<div className="flex items-center justify-center mb-2">
