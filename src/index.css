@@ -124,3 +124,24 @@
   0% { transform: translate(0, 0); }
   100% { transform: translate(50px, 50px); }
 }
+
+/* Logo pulse and float animations */
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% { 
+    transform: scale(1.05);
+    filter: brightness(1.2);
+  }
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px);
+  }
+  50% { 
+    transform: translateY(-8px);
+  }
+}
