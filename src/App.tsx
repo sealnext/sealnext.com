@@ -219,7 +219,7 @@ export default function Component() {
 			name: "TanStack",
 			description: "Data Fetching",
 			color: "from-orange-400 to-red-400",
-			icon: "https://cdn.sealnext.com/tanstack.png",
+			icon: "https://cdn.sealnext.com/tanstack.webp",
 			url: "https://tanstack.com/",
 		},
 		{
