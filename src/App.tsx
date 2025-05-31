@@ -444,10 +444,10 @@ export default function Component() {
 							<nav className="flex-1 flex justify-center">
 								<div className="flex items-center space-x-8">
 									<a
-										href="#systems"
+										href="#architecture"
 										className="text-sm font-medium text-gray-300 hover:text-cyan-400 transition-colors"
 									>
-										Systems
+										Architecture
 									</a>
 									<a
 										href="#projects"
@@ -471,7 +471,7 @@ export default function Component() {
 									asChild
 									className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 bg-transparent transition-colors hover:!text-white"
 								>
-									<a href="https://github.com" className="flex items-center space-x-0">
+									<a href="https://github.com/sealnext" className="flex items-center space-x-0">
 										<Github className="h-4 w-4" />
 										<span>GitHub</span>
 									</a>
@@ -763,7 +763,7 @@ export default function Component() {
 									className="text-lg px-10 py-6 border-2 border-cyan-500 !text-cyan-400 hover:!text-white hover:bg-cyan-500/10 hover:border-cyan-400 font-bold transform hover:scale-105 transition-all duration-300 bg-transparent"
 									asChild
 								>
-									<a href="https://github.com" className="flex items-center space-x-0 !text-cyan-400 hover:!text-white">
+									<a href="https://github.com/orgs/sealnext/repositories" className="flex items-center space-x-0 !text-cyan-400 hover:!text-white">
 										<Github className="size-6" />
 										<span>VIEW SOURCE</span>
 									</a>
@@ -821,7 +821,7 @@ export default function Component() {
 				</section>
 
 				{/* Tech Specs Section */}
-				<section id="systems" className="py-20 px-4 relative">
+				<section id="architecture" className="py-20 px-4 relative">
 					<div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/30 to-transparent" />
 					<div className="container mx-auto relative">
 						<motion.div
@@ -944,7 +944,7 @@ export default function Component() {
 								asChild
 								className="border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 font-bold transform hover:scale-105 transition-all duration-300 bg-transparent"
 							>
-								<a href="https://github.com" className="flex items-center space-x-0 hover:text-white">
+								<a href="https://github.com/sealnext" className="flex items-center space-x-0 hover:text-white">
 									<Github className="h-5 w-5" />
 									<span>ACCESS ALL SYSTEMS</span>
 								</a>
@@ -1011,8 +1011,8 @@ export default function Component() {
 					</div>
 				</section>
 
-				{/* Founders Section */}
-				<section id="founders" className="py-20 px-4">
+				{/* Team Section */}
+				<section id="team" className="py-20 px-4">
 					<div className="container mx-auto">
 						<motion.div
 							initial={{ opacity: 0, y: 20 }}
@@ -1148,7 +1148,7 @@ export default function Component() {
 									asChild
 									className="text-lg px-10 py-6 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 !text-cyan-100 hover:!text-white font-bold transform hover:scale-105 transition-all duration-300"
 								>
-									<a href="https://github.com" className="flex items-center" target="_blank" rel="noopener noreferrer">
+									<a href="mailto:hi@sealnext.com" className="flex items-center" target="_blank" rel="noopener noreferrer">
 										<Terminal className="size-6" />
 										<span>START CONTRIBUTING</span>
 									</a>
@@ -1232,10 +1232,9 @@ export default function Component() {
 										<h3 className="text-white font-black mb-6 text-lg">QUICK ACCESS</h3>
 										<ul className="space-y-3">
 											{[
-												{ name: "Documentation", href: "#" },
-												{ name: "API Reference", href: "#" },
-												{ name: "Getting Started", href: "#" },
-												{ name: "Changelog", href: "#" },
+												{ name: "Website Changelog", href: "https://github.com/sealnext/sealnext.com/commits/main/" },
+												{ name: "Getting Started", href: "https://github.com/orgs/sealnext/repositories" },
+												{ name: "Contact", href: "mailto:hi@sealnext.com" },
 											].map((link, index) => (
 												<li key={index}>
 													<a
